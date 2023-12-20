@@ -17,13 +17,12 @@ import {
   TableRow,
 } from "@mui/material";
 
-const Home = () => {
+const HomeRC = () => {
   const { logout, isAuthenticated, user, getAccessTokenSilently } = useAuth0();
 
   const navigate = useNavigate();
   const [state, setState] = useState({ email: "" });
   const [scenarios, setScenarios] = useState({ scenarios: [] });
-  const [userId, setUserId] = useState(null);
 
   const accessToken = localStorage.getItem("accessToken");
   const userID = localStorage.getItem("userID");
@@ -37,39 +36,23 @@ const Home = () => {
       navigate("/");
     } else {
       // If authenticated, check the user's email
-
-      if (user?.email === "riskconsultant@gmail.com") {
-        // If the user's email is "riskconsultant@gmail.com", redirect to "/homeRC"
-        navigate("/homeRC");
+      if (!user?.email === "riskconsultant@gmail.com") {
+        // If the user's email is NOT "riskconsultant@gmail.com", redirect to "/home"
+        navigate("/home");
       }
     }
   }, [isAuthenticated, navigate, user?.email]);
 
   //   Get access token, UserID and store in local storage and load all scenarios:
   useEffect(() => {
-    // 1. get accessToken and store in local storage:
-    const getTokenAndEmail = async () => {
-      try {
-        const token = await getAccessTokenSilently({
-          authorizationParams: {
-            audience: process.env.REACT_APP_AUDIENCE,
-            scope: "read:current_user",
-          },
-        });
-        console.log("token:", token);
-        localStorage.setItem("accessToken", token);
+    // 1. store email in state so it can be used in get req later:
 
-        if (isAuthenticated && user) {
-          setState({
-            email: user.email,
-          });
-          console.log("user email:", user.email);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getTokenAndEmail();
+    if (isAuthenticated && user) {
+      setState({
+        email: user.email,
+      });
+      console.log("user email:", user.email);
+    }
 
     // 2. Get UserID from backend and store in local storage:
     const getCurrentUserID = async () => {
@@ -115,7 +98,14 @@ const Home = () => {
       }
     };
     loadAllScenarios();
-  }, [state.email, getAccessTokenSilently, accessToken, user, isAuthenticated]);
+  }, [
+    state.email,
+    getAccessTokenSilently,
+    accessToken,
+    user,
+    isAuthenticated,
+    userName,
+  ]);
 
   console.log("scenarios:", scenarios);
   console.log(user?.email);
@@ -159,4 +149,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeRC;
