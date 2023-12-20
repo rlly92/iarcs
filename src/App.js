@@ -1,17 +1,21 @@
 import React from "react";
-import logo from "./logo.png";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LoginPage from "./components/LoginPage";
+import Home from "./components/Home";
+import SignUpInfoPage from "./components/SignUpInfoPage";
 import "./App.css";
 
 class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-        </header>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/signupinfo" element={<SignUpInfoPage />} />
+          </Routes>
+        </BrowserRouter>
       </div>
     );
   }
