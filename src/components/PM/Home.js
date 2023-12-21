@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
@@ -18,12 +19,12 @@ import {
 } from "@mui/material";
 
 const Home = () => {
-  const { logout, isAuthenticated, user, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, user, getAccessTokenSilently, isLoading } =
+    useAuth0();
 
   const navigate = useNavigate();
   const [state, setState] = useState({ email: "" });
   const [scenarios, setScenarios] = useState({ scenarios: [] });
-  const [userId, setUserId] = useState(null);
 
   const accessToken = localStorage.getItem("accessToken");
   const userID = localStorage.getItem("userID");
@@ -120,6 +121,49 @@ const Home = () => {
   console.log("scenarios:", scenarios);
   console.log(user?.email);
 
+  // button action for what happens when PM clicks "add to risk table button":
+  const handleButtonClick = async (scenario) => {
+    try {
+      // Send the scenario to the backend
+      const addToRiskTable = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/usersriskscenarios/addtorisktable`,
+        {
+          riskscenario_id: scenario.id,
+          user_id: userID,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      // Handle success:
+      console.log(addToRiskTable.data.message);
+      if (
+        addToRiskTable.data.message ===
+        "This risk scenario already exists in your risk table"
+      ) {
+        alert("This risk scenario already exists in your risk table");
+      } else if (addToRiskTable.statusText === "OK") {
+        alert("This risk scenario has been added to your risk table");
+      }
+    } catch (error) {
+      // Handle errors
+      console.error("Error adding scenario to risk table:", error);
+      alert("There was an error adding the risk scenario to your risk table.");
+    }
+  };
+
+  if (isLoading) {
+    // Show loading state
+    return (
+      <div>
+        <h1>Loading...Your patience is appreciated.</h1>
+      </div>
+    );
+  }
+
   return (
     <Stack alignItems={"center"} justifyContent={"center"} my={1}>
       <Paper sx={{ px: 5, py: 4, my: 7 }} elevation={0}>
@@ -140,6 +184,7 @@ const Home = () => {
                 <TableCell>Name</TableCell>
                 <TableCell>Description</TableCell>
                 <TableCell>Strategy</TableCell>
+                <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -149,6 +194,16 @@ const Home = () => {
                   <TableCell>{scenario.name}</TableCell>
                   <TableCell>{scenario.description}</TableCell>
                   <TableCell>{scenario.strategy}</TableCell>
+                  <TableCell>
+                    {/* Add a button for each row */}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleButtonClick(scenario)}
+                    >
+                      Add to risk table
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

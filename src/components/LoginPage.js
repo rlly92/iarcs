@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Paper, Stack, Typography } from "@mui/material";
 
 const LoginPage = () => {
-  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,15 +14,6 @@ const LoginPage = () => {
       navigate("/home");
     }
   });
-
-  if (isLoading) {
-    // Show loading state
-    return (
-      <div>
-        <h1>Loading...Your patience is appreciated.</h1>
-      </div>
-    );
-  }
 
   return (
     <Stack alignItems={"center"} justifyContent={"center"} my={1}>

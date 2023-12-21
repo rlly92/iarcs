@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
-import Home from "./components/Home";
-import SignUpInfoPage from "./components/SignUpInfoPage";
-import NavBar from "./components/NavBar";
-import HomeRC from "./components/HomeRC";
-import PMTables from "./components/PMTables";
+import Home from "./components/PM/Home";
+
+import NavBar from "./components/PM/NavBar";
+import HomeRC from "./components/RC/HomeRC";
+import PMTables from "./components/PM/PMTables";
 import "./App.css";
 
 class App extends React.Component {
@@ -17,9 +17,9 @@ class App extends React.Component {
             <Route path="/" element={<LoginPage />} />
             <Route path="/home" element={<Home />} />
             <Route path="/navbar" element={<NavBar />} />
-            <Route path="/signupinfo" element={<SignUpInfoPage />} />
+
             <Route path="/homeRC" element={<HomeRC />} />
-            <Route path="/yourprojects" element={<PMTables />} />
+            <Route path="/yourrisktable" element={<PMTables />} />
           </Routes>
         </BrowserRouter>
       </div>
