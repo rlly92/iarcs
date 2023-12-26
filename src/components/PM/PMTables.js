@@ -93,13 +93,14 @@ const PMTables = () => {
             },
           }
         );
+        // After successful deletion, update the state directly without a reload
+
+        setScenarios((prevScenarios) =>
+          prevScenarios.filter(
+            (scenario) => scenario.user_riskscenario_id !== UserRiskScenarioID
+          )
+        );
       }
-      // After successful deletion, update the state directly without a reload
-      setScenarios((prevScenarios) =>
-        prevScenarios.filter(
-          (scenario) => scenario.user_riskscenario_id !== UserRiskScenarioID
-        )
-      );
     } catch (error) {
       console.error("Error occurred while deleting the scenario", error);
     }
