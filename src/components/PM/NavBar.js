@@ -1,27 +1,13 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
+
 import { useAuth0 } from "@auth0/auth0-react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-} from "@mui/material";
+import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 
 import { useNavigate, Outlet } from "react-router-dom";
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const { logout, isAuthenticated, user } = useAuth0();
-  const [openDialog, setOpenDialog] = useState(false);
-  const [projectTitle, setProjectTitle] = useState("");
-  const userID = localStorage.getItem("userID");
-  const accessToken = localStorage.getItem("accessToken");
+  const { logout } = useAuth0();
 
   return (
     <>

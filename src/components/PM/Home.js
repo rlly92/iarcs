@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import axios from "axios";
@@ -106,7 +106,7 @@ const Home = () => {
 
         if (getAllScenarios.data) {
           // if the scenarios exist in the db(they normally would), store the scenarios data in the local state of scenarios for rendering in return block:
-          await setScenarios(getAllScenarios.data);
+          setScenarios(getAllScenarios.data);
         }
       } catch (error) {
         console.error(

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Tooltip } from "recharts";
 import NavBarRC from "./NavBarRC";
 
 import { Paper, Stack, Typography } from "@mui/material";
@@ -76,7 +76,7 @@ const StatsRC = () => {
 
         if (getPMRiskTables.data) {
           // if the PMRiskSenarios.data exist in the db(they normally would), store them in state variable for rendering in return block:
-          await setRiskTables(getPMRiskTables.data);
+          setRiskTables(getPMRiskTables.data);
         }
       } catch (error) {
         console.error(

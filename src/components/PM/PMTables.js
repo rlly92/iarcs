@@ -60,7 +60,7 @@ const PMTables = () => {
 
         if (getPMRiskScenarios.data) {
           // if the PMRiskSenarios.data exist in the db(they normally would), store them in state variable for rendering in return block:
-          await setScenarios(getPMRiskScenarios.data);
+          setScenarios(getPMRiskScenarios.data);
         }
       } catch (error) {
         console.error(

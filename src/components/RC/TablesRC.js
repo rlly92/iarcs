@@ -58,7 +58,7 @@ const TablesRC = () => {
 
         if (getPMRiskTables.data) {
           // if the PMRiskSenarios.data exist in the db(they normally would), store them in state variable for rendering in return block:
-          await setRiskTables(getPMRiskTables.data);
+          setRiskTables(getPMRiskTables.data);
         }
       } catch (error) {
         console.error(
@@ -72,7 +72,7 @@ const TablesRC = () => {
 
   console.log(riskTables);
 
-  if (isLoading) {
+  if (isLoading && !isAuthenticated) {
     // Show loading state
     return (
       <div>

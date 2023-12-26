@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +32,7 @@ const HomeRC = () => {
   const [editedName, setEditedName] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
   const [editedStrategy, setEditedStrategy] = useState("");
+  const [selectedScenarioID, setSelectedScenarioID] = useState("");
 
   // state variables for Adding New Risk Scenario Modal:
   const [isAddModalOpen, setAddModalOpen] = useState(false);
@@ -103,7 +104,7 @@ const HomeRC = () => {
 
         if (getAllScenarios.data) {
           // if the scenarios exist in the db(they normally would), store the scenarios data in the local state of scenarios for rendering in return block:
-          await setScenarios(getAllScenarios.data);
+          setScenarios(getAllScenarios.data);
         }
       } catch (error) {
         console.error(
@@ -132,6 +133,8 @@ const HomeRC = () => {
     setEditedDescription(scenario.description);
     setEditedStrategy(scenario.strategy);
     setModalOpen(true);
+    setSelectedScenarioID(scenario.id);
+    console.log(scenario.id);
   };
 
   // Function to handle closing the EDIT modal
@@ -141,13 +144,15 @@ const HomeRC = () => {
   };
 
   // button action for what happens when RC clicks "EDIT" button:
-  const handleButtonEdit = async (scenarioID) => {
+  const handleButtonEdit = async (e) => {
+    e.preventDefault();
     try {
       // Send the scenario to the backend
       const editRiskScenario = await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}/riskscenarios/editriskscenario`,
         {
-          riskscenario_id: selectedScenario.id,
+          riskscenario_id: selectedScenarioID,
+
           name: editedName,
           description: editedDescription,
           strategy: editedStrategy,
@@ -197,7 +202,8 @@ const HomeRC = () => {
   };
 
   // Function to handle SUBMIT BUTTON to add a new risk scenario
-  const handleAddRiskScenario = async () => {
+  const handleAddRiskScenario = async (e) => {
+    e.preventDefault();
     try {
       // Send the new scenario to the backend
       const addRiskScenario = await axios.post(
